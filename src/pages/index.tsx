@@ -1,7 +1,6 @@
 import { Nunito, Neucha, Inter } from 'next/font/google';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import classNames from 'classnames';
 
 const font = Inter({
   subsets: ['latin'],
@@ -28,6 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   region: z.string(),
@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <main
-      className={classNames(
+      className={cn(
         'flex min-h-screen flex-col items-center space-y-8 p-8',
         font.className,
       )}
