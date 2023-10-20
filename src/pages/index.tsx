@@ -27,7 +27,8 @@ import { useForm } from 'react-hook-form';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/redux';
+import { useAppDispatch, useAppSelector } from '@/redux';
+import { fetchPosts } from '@/actions/posts';
 
 const formSchema = z.object({
   username: z.string().min(3, { message: 'should have at least 3 characters' }),
@@ -41,10 +42,11 @@ export default function Home() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  const { data, status, error } = useAppSelector(({ posts }) => posts);
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const posts = dispatch();
-    console.log(posts);
+    dispatch(fetchPosts());
   }
+  console.log(data.results, status, error);
 
   return (
     <main

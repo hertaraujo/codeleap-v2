@@ -1,15 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PostType } from '@/redux/slices/types';
 import { fetchPosts } from '@/actions/posts';
+import { ResponseData } from '@/services/types';
+import { RequestStatus } from '@/redux/types';
 
 type InitialState = {
-  posts: PostType[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  data: ResponseData<PostType>;
+  status: RequestStatus;
   error?: string;
 };
 
 const initialState: InitialState = {
-  posts: [],
+  data: {
+    count: 0,
+    next: null,
+    previous: null,
+    results: [],
+  },
   status: 'idle',
   error: undefined,
 };
@@ -25,7 +32,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.posts = action.payload;
+        state.data = action.payload;
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = 'failed';
@@ -34,4 +41,4 @@ const postsSlice = createSlice({
   },
 });
 
-export default postsSlice.reducer;
+export const postsReducer = postsSlice.reducer;
