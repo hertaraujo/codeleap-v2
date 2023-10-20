@@ -1,10 +1,15 @@
-import { Nunito, Neucha, Inter } from 'next/font/google';
+import { Roboto, Inter } from 'next/font/google';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const font = Inter({
   subsets: ['latin'],
   weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
+});
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700', '900'],
 });
 
 import { Button } from '@/components/ui/button';
@@ -19,87 +24,66 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/router';
+import { useAppDispatch } from '@/redux';
 
 const formSchema = z.object({
-  region: z.string(),
-  url: z.string().url({ message: 'Must be a valid url' }),
+  username: z.string().min(3, { message: 'should have at least 3 characters' }),
 });
 
 export default function Home() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      url: '',
-    },
   });
 
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const posts = dispatch();
+    console.log(posts);
   }
 
   return (
     <main
       className={cn(
-        'flex min-h-screen flex-col items-center space-y-8 p-8',
+        'flex min-h-screen flex-col items-center justify-center space-y-8 bg-slate-200 p-8',
         font.className,
       )}
     >
-      <h1 className="text-xl">POC</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="region"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Region</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="">
-                      <SelectValue placeholder="Select a region" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="br1">Brasil</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription>
-                  This is the region of the provider
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>URL</FormLabel>
-                <FormControl>
-                  <Input {...field}></Input>
-                </FormControl>
-                <FormDescription>
-                  This is the url to receive tournament
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+      <div className="space-y-6 rounded-lg bg-white p-6">
+        <h1 className="text-xl font-semibold">Welcome to CodeLeap network!</h1>
 
-      <ThemeToggle />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex w-[400px] flex-col space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Please enter your username</FormLabel>
+                  <FormControl>
+                    <Input {...field}></Input>
+                  </FormControl>
+                  <FormDescription>
+                    It&lsquo;s used to identify you throughout the application
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="self-end">
+              ENTER
+            </Button>
+          </form>
+        </Form>
+      </div>
+      {/* <ThemeToggle /> */}
     </main>
   );
 }

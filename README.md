@@ -18,3 +18,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Zod
 - ReactHookForm
 - Shadcn
+
+### TODO
+
+- [ ] Create the screens
+  - [ ] Create components of every screen
+- [ ] Create the essential functionalities
+- [ ] Go to _bonus points_ section and implement something from there
