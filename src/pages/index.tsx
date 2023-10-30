@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { ThemeToggle } from '@/components/theme-toggle';
+// import { ThemeToggle } from '@/components/theme-toggle';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux';
@@ -34,19 +34,19 @@ const formSchema = z.object({
   username: z.string().min(3, { message: 'should have at least 3 characters' }),
 });
 
-export default function Home() {
+export default function SignUp() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
   const { data, status, error } = useAppSelector(({ posts }) => posts);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     dispatch(fetchPosts());
+    router.push('/feed');
   }
-  console.log(data.results, status, error);
 
   return (
     <main

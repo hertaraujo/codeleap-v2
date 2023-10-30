@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PostType } from '@/redux/slices/types';
+import { PostType } from '@/types';
 import { fetchPosts } from '@/actions/posts';
 import { ResponseData } from '@/services/types';
 import { RequestStatus } from '@/redux/types';
