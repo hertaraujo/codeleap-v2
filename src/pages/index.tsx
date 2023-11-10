@@ -29,6 +29,7 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux';
 import { fetchPosts } from '@/actions/posts';
+import Head from 'next/head';
 
 const formSchema = z.object({
   username: z.string().min(3, { message: 'should have at least 3 characters' }),
@@ -39,9 +40,10 @@ export default function SignUp() {
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+    },
   });
-
-  const { data, status, error } = useAppSelector(({ posts }) => posts);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     dispatch(fetchPosts());
@@ -49,43 +51,54 @@ export default function SignUp() {
   }
 
   return (
-    <main
-      className={cn(
-        'flex min-h-screen flex-col items-center justify-center space-y-8 bg-slate-200 p-8',
-        font.className,
-      )}
-    >
-      <div className="space-y-6 rounded-lg bg-white p-6">
-        <h1 className="text-xl font-semibold">Welcome to CodeLeap network!</h1>
+    <>
+      <Head>
+        <meta
+          name="description"
+          content="A network to share what you're thinking"
+        />
+        <title>Codeleap Network</title>
+      </Head>
+      <main
+        className={cn(
+          'flex min-h-screen items-center justify-center',
+          font.className,
+        )}
+      >
+        <div className="space-y-6 rounded-lg bg-white p-6 ring-1 ring-slate-300">
+          <h1 className="text-xl font-semibold">
+            Welcome to CodeLeap network!
+          </h1>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex w-[400px] flex-col space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Please enter your username</FormLabel>
-                  <FormControl>
-                    <Input {...field}></Input>
-                  </FormControl>
-                  <FormDescription>
-                    It&lsquo;s used to identify you throughout the application
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="self-end">
-              ENTER
-            </Button>
-          </form>
-        </Form>
-      </div>
-      {/* <ThemeToggle /> */}
-    </main>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex w-[400px] flex-col space-y-4 "
+            >
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Please enter your username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John doe" {...field}></Input>
+                    </FormControl>
+                    <FormDescription>
+                      It&lsquo;s used to identify you throughout the application
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="self-end">
+                ENTER
+              </Button>
+            </form>
+          </Form>
+        </div>
+        {/* <ThemeToggle /> */}
+      </main>
+    </>
   );
 }

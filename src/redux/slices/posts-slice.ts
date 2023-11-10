@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PostType } from '@/types';
 import { fetchPosts } from '@/actions/posts';
-import { ResponseData } from '@/services/types';
+import { PaginatedResponseData } from '@/services/types';
 import { RequestStatus } from '@/redux/types';
 
 type InitialState = {
-  data: ResponseData<PostType>;
+  data: PaginatedResponseData<PostType>;
   status: RequestStatus;
   error?: string;
 };
